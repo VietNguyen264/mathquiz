@@ -86,40 +86,40 @@ const App: React.FC = () => {
         {gameState === 'START' && (
           <div className="p-8 text-center space-y-6">
             <div className="text-6xl mb-4">🍎</div>
-            <h1 className="text-4xl font-bold text-sky-600">Math Adventure</h1>
-            <p className="text-slate-500 text-lg">Pick a math world to explore!</p>
+            <h1 className="text-4xl font-bold text-sky-600">Toán vui khám phá</h1>
+            <p className="text-slate-500 text-lg">Chọn một thế giới toán học để khám phá!</p>
             
             <div className="grid grid-cols-2 gap-4">
               <button 
                 onClick={() => startNewGame(OperationType.ADDITION)}
                 className="p-4 bg-orange-100 hover:bg-orange-200 text-orange-600 rounded-2xl transition-all border-b-4 border-orange-300 active:translate-y-1 font-bold"
               >
-                ➕ Plus
+                ➕ Phép cộng
               </button>
               <button 
                 onClick={() => startNewGame(OperationType.SUBTRACTION)}
                 className="p-4 bg-blue-100 hover:bg-blue-200 text-blue-600 rounded-2xl transition-all border-b-4 border-blue-300 active:translate-y-1 font-bold"
               >
-                ➖ Minus
+                ➖ Phép trừ
               </button>
               <button 
                 onClick={() => startNewGame(OperationType.MULTIPLICATION)}
                 className="p-4 bg-purple-100 hover:bg-purple-200 text-purple-600 rounded-2xl transition-all border-b-4 border-purple-300 active:translate-y-1 font-bold"
               >
-                ✖️ Times
+                ✖️ Phép nhân
               </button>
               <button 
                 onClick={() => startNewGame(OperationType.DIVISION)}
                 className="p-4 bg-green-100 hover:bg-green-200 text-green-600 rounded-2xl transition-all border-b-4 border-green-300 active:translate-y-1 font-bold"
               >
-                ➗ Sharing
+                ➗ Phép chia
               </button>
             </div>
             <button 
               onClick={() => startNewGame('MIXED')}
               className="w-full p-6 bg-sky-500 hover:bg-sky-600 text-white rounded-2xl transition-all border-b-4 border-sky-700 active:translate-y-1 font-bold text-xl"
             >
-              🌈 Mixed Surprise!
+              🌈 Kết hợp ngẫu nhiên
             </button>
           </div>
         )}
@@ -129,7 +129,7 @@ const App: React.FC = () => {
             {/* Header / Progress */}
             <div className="w-full flex justify-between items-center mb-8">
               <div className="bg-sky-100 px-4 py-2 rounded-full font-bold text-sky-600">
-                Score: {stats.score}
+                Điểm số: {stats.score}
               </div>
               <div className="flex gap-1">
                 {Array.from({ length: 10 }).map((_, i) => (
@@ -171,12 +171,12 @@ const App: React.FC = () => {
             <div className="mt-8 min-h-[32px]">
               {lastAnswerCorrect === true && (
                 <div className="text-green-500 font-bold text-xl animate-bounce">
-                  ✨ Perfect! Amazing! ✨
+                  ✨ Hoàn hảo! Rất tốt! ✨
                 </div>
               )}
               {lastAnswerCorrect === false && (
                 <div className="text-red-400 font-bold text-xl">
-                  Oops! Try again! 💫
+                  Oops! Thử lại nào! 💫
                 </div>
               )}
             </div>
@@ -185,24 +185,24 @@ const App: React.FC = () => {
 
         {gameState === 'SUMMARY' && (
           <div className="p-10 text-center space-y-6">
-            <h2 className="text-4xl font-bold text-sky-600">Great Job!</h2>
+            <h2 className="text-4xl font-bold text-sky-600">Làm tốt lắm!</h2>
             <div className="text-7xl">🏆</div>
             <div className="bg-sky-50 p-6 rounded-3xl space-y-3">
-              <p className="text-xl">You got <span className="text-3xl font-bold text-sky-600">{stats.score}</span> out of 10!</p>
-              <p className="text-lg text-slate-500">Best Streak: {stats.bestStreak} 🔥</p>
+              <p className="text-xl">Bạn có <span className="text-3xl font-bold text-sky-600">{stats.score}</span> trên 10 điểm!</p>
+              <p className="text-lg text-slate-500">Đúng liên tiếp: {stats.bestStreak} 🔥</p>
             </div>
             <button
               onClick={() => setGameState('START')}
               className="w-full py-5 bg-orange-500 hover:bg-orange-600 text-white text-2xl font-bold rounded-2xl transition-all border-b-4 border-orange-700 active:translate-y-1"
             >
-              Play Again! 🚀
+              Cùng chơi lại nào! 🚀
             </button>
           </div>
         )}
       </div>
 
       <footer className="mt-8 text-slate-400 text-sm font-medium">
-        Made with ❤️ for First Grade Math Wizards
+        Tạo ra với mục đích sự giáo dục lý thú cho các bạn nhỏ ❤️
       </footer>
     </div>
   );
