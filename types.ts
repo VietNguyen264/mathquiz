@@ -1,8 +1,15 @@
+
 export enum OperationType {
   ADDITION = 'ADDITION',
   SUBTRACTION = 'SUBTRACTION',
   MULTIPLICATION = 'MULTIPLICATION',
   DIVISION = 'DIVISION'
+}
+
+export enum Difficulty {
+  EASY = 'EASY',
+  MEDIUM = 'MEDIUM',
+  HARD = 'HARD'
 }
 
 export interface Question {

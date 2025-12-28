@@ -1,5 +1,5 @@
 
-import { OperationType, Question } from '../types';
+import { OperationType, Question, Difficulty } from '../types';
 
 const getRandomInt = (min: number, max: number): number => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -14,42 +14,79 @@ const shuffleArray = <T,>(array: T[]): T[] => {
   return newArr;
 };
 
-export const generateQuestion = (type: OperationType): Question => {
+export const generateQuestion = (type: OperationType, difficulty: Difficulty): Question => {
   let a = 0, b = 0, answer = 0, op = '';
+
+  // Định nghĩa phạm vi kết quả dựa trên độ khó
+  let minAns = 0, maxAns = 20;
+  if (difficulty === Difficulty.MEDIUM) {
+    minAns = 20;
+    maxAns = 60;
+  } else if (difficulty === Difficulty.HARD) {
+    minAns = 60;
+    maxAns = 99;
+  }
 
   switch (type) {
     case OperationType.ADDITION:
-      a = getRandomInt(1, 12);
-      b = getRandomInt(1, 10);
-      answer = a + b;
+      answer = getRandomInt(minAns, maxAns);
+      a = getRandomInt(0, answer);
+      b = answer - a;
       op = '+';
       break;
     case OperationType.SUBTRACTION:
-      a = getRandomInt(5, 20);
-      b = getRandomInt(1, a); // Ensure no negative results
+      a = getRandomInt(minAns, maxAns);
+      answer = getRandomInt(0, a - minAns > 0 ? a - minAns : 0); // Đảm bảo kết quả nằm trong dải mong muốn
+      // Thực tế với lớp 1, phép trừ thường là a - b = answer, với answer nhỏ.
+      // Điều chỉnh để a và b phù hợp:
+      if (difficulty === Difficulty.EASY) {
+        a = getRandomInt(5, 20);
+        b = getRandomInt(0, a);
+      } else if (difficulty === Difficulty.MEDIUM) {
+        a = getRandomInt(25, 60);
+        b = getRandomInt(5, 20);
+      } else {
+        a = getRandomInt(70, 99);
+        b = getRandomInt(10, 30);
+      }
       answer = a - b;
       op = '-';
       break;
     case OperationType.MULTIPLICATION:
-      // Very simple 1st grade grouping/skip-counting
-      a = getRandomInt(1, 5);
-      b = getRandomInt(1, 5);
+      // Phép nhân lớp 1 chỉ ở mức làm quen
+      if (difficulty === Difficulty.EASY) {
+        a = getRandomInt(1, 5);
+        b = getRandomInt(1, 4);
+      } else if (difficulty === Difficulty.MEDIUM) {
+        a = getRandomInt(2, 10);
+        b = getRandomInt(2, 5);
+      } else {
+        a = getRandomInt(5, 12);
+        b = getRandomInt(3, 8);
+      }
       answer = a * b;
       op = '×';
       break;
     case OperationType.DIVISION:
-      // Very simple sharing
-      b = getRandomInt(1, 5);
-      answer = getRandomInt(1, 4);
-      a = b * answer; // Ensure integer result
+      if (difficulty === Difficulty.EASY) {
+        answer = getRandomInt(1, 5);
+        b = getRandomInt(1, 4);
+      } else if (difficulty === Difficulty.MEDIUM) {
+        answer = getRandomInt(5, 10);
+        b = getRandomInt(2, 5);
+      } else {
+        answer = getRandomInt(10, 20);
+        b = getRandomInt(2, 5);
+      }
+      a = answer * b;
       op = '÷';
       break;
   }
 
-  // Generate wrong options
+  // Tạo các phương án sai xung quanh kết quả đúng
   const optionsSet = new Set<number>([answer]);
   while (optionsSet.size < 3) {
-    const offset = getRandomInt(-4, 4);
+    const offset = getRandomInt(-5, 5);
     const wrongOpt = answer + offset;
     if (wrongOpt >= 0 && wrongOpt !== answer) {
       optionsSet.add(wrongOpt);
