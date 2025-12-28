@@ -8,6 +8,7 @@ const App: React.FC = () => {
   const [gameState, setGameState] = useState<'START' | 'DIFFICULTY' | 'PLAYING' | 'SUMMARY'>('START');
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
   const [difficulty, setDifficulty] = useState<Difficulty>(Difficulty.EASY);
+  const [questionHistory, setQuestionHistory] = useState<string[]>([]);
   const [stats, setStats] = useState<GameStats>({
     score: 0,
     totalQuestions: 0,
@@ -26,13 +27,16 @@ const App: React.FC = () => {
   const startNewGame = (diff: Difficulty) => {
     setDifficulty(diff);
     setStats({ score: 0, totalQuestions: 0, streak: 0, bestStreak: 0 });
+    setQuestionHistory([]); // Reset lịch sử khi bắt đầu game mới
     setGameState('PLAYING');
-    nextQuestion(selectedType, diff);
+    nextQuestion(selectedType, diff, []);
   };
 
-  const nextQuestion = (type?: OperationType | 'MIXED', diff?: Difficulty) => {
+  const nextQuestion = (type?: OperationType | 'MIXED', diff?: Difficulty, historyOverride?: string[]) => {
     const activeType = type || selectedType;
     const activeDiff = diff || difficulty;
+    const activeHistory = historyOverride !== undefined ? historyOverride : questionHistory;
+    
     let questionType: OperationType;
     
     if (activeType === 'MIXED') {
@@ -42,7 +46,11 @@ const App: React.FC = () => {
       questionType = activeType as OperationType;
     }
 
-    setCurrentQuestion(generateQuestion(questionType, activeDiff));
+    const newQuestion = generateQuestion(questionType, activeDiff, activeHistory);
+    
+    // Cập nhật lịch sử
+    setQuestionHistory(prev => [...prev, `${newQuestion.a}${newQuestion.op}${newQuestion.b}`]);
+    setCurrentQuestion(newQuestion);
     setLastAnswerCorrect(null);
   };
 
